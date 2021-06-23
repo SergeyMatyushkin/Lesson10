@@ -1,8 +1,10 @@
 package com.example.lesson10;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,10 +16,13 @@ import java.util.List;
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessageVh> {
 
     private List<MessageEntity> data = new ArrayList();
+    private String uid;
 
 
-    public void setData(List<MessageEntity> data) {
+    public void setData(List<MessageEntity> data, String uid) {
         this.data = data;
+        this.uid = uid;
+
     }
 
     @NonNull
@@ -28,12 +33,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MessageVh holder, int position) {
-        holder.bind(data.get(position));
+        holder.bind(data.get(position), uid);
 
     }
 
     @Override
     public int getItemCount() {
+
         return data.size();
     }
 
@@ -46,10 +52,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         }
 
-        public void bind(MessageEntity messageEntity) {
+        public void bind(MessageEntity messageEntity, String uid) {
             nameTv.setText(messageEntity.getName());
+            nameTv.setTextColor(messageEntity.getColor());
             messageTv.setText(messageEntity.getMessage());
+            int gravity = messageEntity.getUid().equals(uid) ? Gravity.END: Gravity.START;
+            ((LinearLayout) itemView).setGravity(gravity);
+            }
 
         }
     }
-}
